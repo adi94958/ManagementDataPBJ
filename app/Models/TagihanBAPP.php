@@ -11,7 +11,6 @@ class TagihanBAPP extends Model
 
     protected $table = 'tagihan_bapp';
     protected $primaryKey = 'nomor_bapp';
-    protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
@@ -21,8 +20,6 @@ class TagihanBAPP extends Model
         'tanggal_permohonan_bapp',
         'tanggal_bapp',
         'nilai_kontrak_bapp',
-        'jumlah_bayar_termin_1_bapp',
-        'jangka_waktu_pemeliharaan_bapp',
     ];
 
     protected $casts = [

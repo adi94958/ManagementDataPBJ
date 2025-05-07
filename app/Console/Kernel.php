@@ -13,9 +13,18 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+    // protected $commands = [
+    //     \App\Console\Commands\CheckExpiredContracts::class,
+    // ];
+    protected $commands = [
+        \App\Console\Commands\CekTanggalKontrak::class,
+    ];
+
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Run daily at 7:00 AM
+        // $schedule->command('contracts:check-expired')->dailyAt('00:00');
+        $schedule->command('cek:tanggal-kontrak')->daily();
     }
 
     /**
@@ -25,7 +34,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

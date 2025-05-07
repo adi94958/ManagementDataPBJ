@@ -1,57 +1,58 @@
 @php
 $linksUser = [
-[
-"href" => route('home'),
-"text" => "Dasboard",
-"icon" => "fas fa-home",
-"is_multi" => false
-],
-[
-"text" => "Berkas & Tagihan PBJ",
-"icon" => "fa fa-file-alt",
-"is_multi" => false,
-"href" => route('berkas_pbj.index')
-],
+  [
+    "href" => route('home'),
+    "text" => "Dasboard",
+    "icon" => "fas fa-home",
+    "is_multi" => false
+  ],
+  [
+    "text" => "Berkas dan Tagihan PBJ",
+    "icon" => "fa fa-file-alt",
+    "is_multi" => false,
+    "href" => route('berkas_pbj.index')
+  ],
 ];
 
 $linksAdmin = [
-[
-"text" => "Kelola Data Akun",
-"icon" => "fa fa-cubes",
-"is_multi" => true,
-"href" => [
-[
-"section_text" => "Data Akun",
-"section_icon" => "far fa-circle",
-"section_href" => route('akun.index')
-],
-[
-"section_text" => "Tambah Akun",
-"section_icon" => "far fa-circle",
-"section_href" => route('akun.add')
-]
-]
-],
+  [
+    "text" => "Kelola Data Akun",
+    "icon" => "fa fa-cubes",
+    "is_multi" => true,
+    "href" => [
+      [
+        "section_text" => "Data Akun",
+        "section_icon" => "far fa-circle",
+        "section_href" => route('akun.index')
+      ],
+      [
+        "section_text" => "Tambah Akun",
+        "section_icon" => "far fa-circle",
+        "section_href" => route('akun.add')
+      ]
+    ]
+  ],
 ];
 
 $user = auth()->user();
 // Cek dan dapatkan role
 if ($user) {
-$role = $user->role; // Sesuaikan dengan nama properti role pada model User Anda
-// Sekarang $role berisi nilai role dari pengguna yang sudah login
-if($role == 1){
-$links = $linksAdmin;
-}else{
-$links = $linksUser;
+  $role = $user->role; // Sesuaikan dengan nama properti role pada model User Anda
+  // Sekarang $role berisi nilai role dari pengguna yang sudah login
+  if($role == 'admin') {
+    $links = $linksAdmin;
+  } else if ($role == 'user') {
+    $links = $linksUser;
+  }
 }
-}
+
 $navigation_links = json_decode(json_encode($links));
 @endphp
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="/dashboard/admin" class="brand-link d-flex justify-content-center align-items-center">
-    <span class="brand-text font-weight-light">PT Jasa Marga</span>
+  <a href="/dashboard/user" class="brand-link d-flex justify-content-center align-items-center">
+    <span class="brand-text font-weight-light">PT JMRB RO 2</span>
   </a>
 
 

@@ -12,7 +12,7 @@ class AkunController extends Controller
 {
     public function index()
     {
-        return view('page.superadmin.akun.index');
+        return view('page.admin.akun.index');
     }
 
     public function dataTable(Request $request)
@@ -67,7 +67,7 @@ class AkunController extends Controller
                 if ($akun_val->user_image) {
                     $img = $akun_val->user_image;
                 } else {
-                    $img = asset('vendor/adminlte3/img/user2-160x160.jpg');
+                    $img = asset('vendor/adminlte3/img/user.png');
                 }
                 $akunnestedData['name'] = $akun_val->name;
                 $akunnestedData['email'] = $akun_val->email;
@@ -101,7 +101,7 @@ class AkunController extends Controller
             $img = null;
             if ($request->file('user_image')) {
                 $nama_gambar = time() . '_' . $request->file('user_image')->getClientOriginalName();
-                $upload = $request->user_image->storeAs('public/admin/user_profile', $nama_gambar);
+                $upload = $request->user_image->storeAs('public/user/user_profile', $nama_gambar);
                 $img = Storage::url($upload);
             }
             User::create([
@@ -109,11 +109,11 @@ class AkunController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'user_image' => $img,
-                'role' => '2',
+                'role' => 'user',
             ]);
             return redirect()->route('akun.add')->with('status', 'Data telah tersimpan di database');
         }
-        return view('page.superadmin.akun.addAkun');
+        return view('page.admin.akun.addAkun');
     }
 
     public function ubahAkun($id, Request $request)
@@ -135,7 +135,7 @@ class AkunController extends Controller
                     unlink(public_path() . $img);
                 }
                 $nama_gambar = time() . '_' . $request->file('user_image')->getClientOriginalName();
-                $upload = $request->user_image->storeAs('public/admin/user_profile', $nama_gambar);
+                $upload = $request->user_image->storeAs('public/user/user_profile', $nama_gambar);
                 $img = Storage::url($upload);
             }
             $usr->update([
@@ -146,7 +146,7 @@ class AkunController extends Controller
             ]);
             return redirect()->route('akun.edit', ['id' => $usr->id])->with('status', 'Data telah tersimpan di database');
         }
-        return view('page.superadmin.akun.ubahAkun', [
+        return view('page.admin.akun.ubahAkun', [
             'usr' => $usr
         ]);
     }

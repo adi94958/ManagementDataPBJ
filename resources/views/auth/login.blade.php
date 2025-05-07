@@ -2,7 +2,8 @@
 <div class="login-box">
     <div class="login-logo">
         <a href="#">
-            <b>Admin</b>LTE</a>
+            <b>PT JMRB RO 2</b>
+        </a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
@@ -22,7 +23,6 @@
                         required="required"
                         autocomplete="email"
                         autofocus="autofocus">
-                    {{-- <input type="email" class="form-control" placeholder="Email" autocomplete="off"> --}}
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -35,7 +35,6 @@
                     @enderror
                 </div>
                 <div class="input-group mb-3">
-                    {{-- <input type="password" class="form-control" placeholder="Password"> --}}
                     <input
                         id="password"
                         type="password"
@@ -45,8 +44,8 @@
                         required="required"
                         autocomplete="current-password">
                     <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
+                        <div class="input-group-text" style="cursor: pointer;" onclick="togglePassword()">
+                            <span id="eyeIcon" class="fas fa-eye"></span>
                         </div>
                     </div>
                     @error('password')
@@ -54,7 +53,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                </div>
+                </div>                
                 <div class="row">
                     <div class="col-12 text-center">
                         <button type="submit" class="btn btn-primary btn-block">Masuk</button>
@@ -66,6 +65,23 @@
         <!-- /.login-card-body -->
     </div>
 </div>
+
+@push('scripts')
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon");
+    
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
+    
+        eyeIcon.classList.toggle("fa-eye");
+        eyeIcon.classList.toggle("fa-eye-slash");
+    }
+    </script>
+    
+@endpush
+
 @endsection
 
 <!-- /.login-box -->

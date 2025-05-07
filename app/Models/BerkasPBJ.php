@@ -20,6 +20,9 @@ class BerkasPBJ extends Model
         'tanggal_kontrak_selesai',
         'nilai_kontrak_pbj',
         'nama_vendor',
+        'tanggal_mulai_pemeliharaan',
+        'tanggal_selesai_pemeliharaan',
+        'file_path',
     ];
 
     public function tagihanPHO()

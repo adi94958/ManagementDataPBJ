@@ -9,6 +9,8 @@ class TagihanBASTP extends Model
 {
     use HasFactory;
     protected $table = 'tagihan_bastp';
+    protected $primaryKey = 'nomor_bastp';
+    public $incrementing = false;
     protected $fillable = [
         'nomor_bastp',
         'nomor_kontrak',
@@ -17,7 +19,6 @@ class TagihanBASTP extends Model
         'tanggal_bastp',
         'nilai_kontrak_bastp',
         'jumlah_bayar_termin_1_bastp',
-        'jangka_waktu_pemeliharaan_bastp',
     ];
 
     protected $casts = [

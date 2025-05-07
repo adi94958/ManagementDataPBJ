@@ -64,13 +64,12 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         // Setelah berhasil login, periksa peran pengguna
-        $role = $user->role;
-        // dd($role);
-        // Redirect berdasarkan peran pengguna
-        if ($role == '2') {
+        if ($user->role == 'admin') {
+            return redirect()->route('akun.index');
+        } elseif ($user->role == 'user') {
             return redirect()->route('home');
-        } elseif ($role == '1') {
-            return redirect()->route('superadmin.dashboard');
         }
+
+        return redirect('/'); // fallback jika role tidak dikenali
     }
 }

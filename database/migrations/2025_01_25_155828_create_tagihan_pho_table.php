@@ -19,6 +19,12 @@ return new class extends Migration
             $table->date('tanggal_ba_pemeriksaan_pekerjaan_pho');
             $table->string('nomor_ba_serah_terima_pho');
             $table->date('tanggal_ba_serah_terima_pho');
+            $table->string('nomor_bapp_pada_pho');
+            $table->date('tanggal_bapp_pada_pho');
+            $table->string('nomor_bastp_pada_pho');
+            $table->date('tanggal_bastp_pada_pho');
+            $table->string('nomor_permohonan_pho_vendor');
+            $table->date('tanggal_permohonan_pho_vendor');
             $table->timestamps();
         });
     }

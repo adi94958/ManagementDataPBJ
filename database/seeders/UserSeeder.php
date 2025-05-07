@@ -18,16 +18,16 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'admin',
-            'email' => 'admin@admin',
-            'password' => Hash::make('12345678'), // Ganti dengan password yang diinginkan
-            'role' => '1'
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'), // Ganti dengan password yang diinginkan
+            'role' => 'admin'
         ]);
 
         User::create([
             'name' => 'user',
-            'email' => 'user1@user',
-            'password' => Hash::make('12345678'), // Ganti dengan password yang diinginkan
-            'role' => '2'
+            'email' => 'user@example.com',
+            'password' => Hash::make('password'), // Ganti dengan password yang diinginkan
+            'role' => 'user'
         ]);
     }
 }

@@ -20,6 +20,9 @@ return new class extends Migration
             $table->date('tanggal_kontrak_selesai');
             $table->integer('nilai_kontrak_pbj');
             $table->string('nama_vendor');
+            $table->string('file_path')->nullable();
+            $table->date('tanggal_mulai_pemeliharaan');
+            $table->date('tanggal_selesai_pemeliharaan');
             $table->timestamps();
         });
     }

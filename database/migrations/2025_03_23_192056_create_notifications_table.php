@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tagihan_bastp', function (Blueprint $table) {
-            $table->string('nomor_kontrak');
-            $table->string('nomor_permohonan_bastp');
-            $table->date('tanggal_permohonan_bastp');
-            $table->string('nomor_bastp')->primary();
-            $table->date('tanggal_bastp');
-            $table->string('jumlah_bayar_termin_1_bastp');
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('type');
+            $table->morphs('notifiable');
+            $table->text('data');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tagihan_bastp');
+        Schema::dropIfExists('notifications');
     }
 };

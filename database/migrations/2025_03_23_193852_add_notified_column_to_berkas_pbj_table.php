@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tagihan_bapp', function (Blueprint $table) {
-            $table->string('nomor_kontrak');
-            $table->string('nomor_permohonan_bapp');
-            $table->date('tanggal_permohonan_bapp');
-            $table->string('nomor_bapp')->primary();
-            $table->date('tanggal_bapp');
-            $table->timestamps();
+        Schema::table('berkas_pbj', function (Blueprint $table) {
+            $table->boolean('notified')->default(false)->after('tanggal_kontrak_selesai');
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tagihan_bapp');
+        Schema::table('berkas_pbj', function (Blueprint $table) {
+            $table->dropColumn('notified');
+        });
     }
 };

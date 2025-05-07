@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Models\BerkasPBJ;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
 
 class HomeController extends Controller
 {
@@ -25,14 +29,58 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        Artisan::call('cek:tanggal-kontrak');
+        $status = $request->status ?? 'semua';
+        $query = BerkasPBJ::query();
+
+
+        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
+
+            // Ini logika kalau mau lebih ketat jadi hanya menampilkan dari range mulai dan akhir yang dipilih user
+            $query->whereDate('tanggal_kontrak_mulai', '>=', $request->tanggal_awal)
+                ->whereDate('tanggal_kontrak_selesai', '<=', $request->tanggal_akhir);
+        }
+
+
+        // Filter berdasarkan status
+        $hariIni = Carbon::now();
+        if ($status == 'aktif') {
+            $query->where('tanggal_kontrak_selesai', '>=', $hariIni);
+        } elseif ($status == 'berakhir') {
+            $query->where('tanggal_kontrak_selesai', '<', $hariIni);
+        }
+
+        // Clone query untuk mendapatkan total sebelum filtering tambahan
+        $totalKontrak = $query->count();
+
+        // Kontrak aktif (tanggal_kontrak_selesai >= hari ini)
+        $kontrakAktif = $query->clone()->where('tanggal_kontrak_selesai', '>=', $hariIni)->count();
+
+        // Kontrak berakhir (tanggal_kontrak_selesai < hari ini)
+        $kontrakBerakhir = $query->clone()->where('tanggal_kontrak_selesai', '<', $hariIni)->count();
+
+        // Total nilai kontrak
+        $totalNilaiKontrak = $query->clone()->sum('nilai_kontrak_pbj');
+
+        // Data untuk tabel kontrak
+        $kontrakData = $query->clone()
+            ->orderBy('tanggal_kontrak_mulai', 'desc')
+            ->get();
+
+        return view('home', compact(
+            'totalKontrak',
+            'kontrakAktif',
+            'kontrakBerakhir',
+            'totalNilaiKontrak',
+            'kontrakData'
+        ));
     }
 
     public function profile()
     {
-        return view('page.admin.profile');
+        return view('page.profile');
     }
 
     public function updateprofile(Request $request)
@@ -57,18 +105,24 @@ class HomeController extends Controller
 
                 // Hapus gambar lama jika ada
                 if ($img_old && file_exists(public_path() . $img_old)) {
-                    unlink(public_path() . $img_old);
+                    Storage::delete(str_replace('/storage', 'public', $img_old));
                 }
+
+                // Tentukan folder penyimpanan berdasarkan role
+                $role = Auth::user()->role;
+                $folder = $role === 'admin' ? 'admin/user_profile' : 'user/user_profile';
 
                 // Upload gambar baru
                 $nama_gambar = time() . '_' . $request->file('user_image')->getClientOriginalName();
-                $upload = $request->user_image->storeAs('public/admin/user_profile', $nama_gambar);
+                $upload = $request->file('user_image')->storeAs("public/$folder", $nama_gambar);
+
+                // Simpan path yang dapat diakses publik
                 $data['user_image'] = Storage::url($upload);
             }
 
             // Update data user
             $usr->update($data);
-            return redirect()->route('profile')->with('status', 'Perubahan telah tersimpan');
+            return redirect()->route(Auth::user()->role . '.profile')->with('status', 'Perubahan telah tersimpan');
         } elseif ($request->input('type') == 'change_password') {
             $this->validate($request, [
                 'password' => 'min:8|confirmed|required',
@@ -77,7 +131,7 @@ class HomeController extends Controller
             $usr->update([
                 'password' => Hash::make($request->password)
             ]);
-            return redirect()->route('profile')->with('status', 'Perubahan telah tersimpan');
+            return redirect()->route(Auth::user()->role . '.profile')->with('status', 'Perubahan telah tersimpan');
         }
     }
 }

@@ -22,8 +22,6 @@ class TagihanBAPPSeeder extends Seeder
                 'nomor_permohonan_bapp' => 'PERM/BAPP/2024/001',
                 'tanggal_permohonan_bapp' => '2024-01-15',
                 'tanggal_bapp' => '2024-01-20',
-                'jumlah_bayar_termin_1_bapp' => 65000000, // 30% dari nilai kontrak
-                'jangka_waktu_pemeliharaan_bapp' => '40',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -33,8 +31,6 @@ class TagihanBAPPSeeder extends Seeder
                 'nomor_permohonan_bapp' => 'PERM/BAPP/2024/002',
                 'tanggal_permohonan_bapp' => '2024-01-16',
                 'tanggal_bapp' => '2024-01-21',
-                'jumlah_bayar_termin_1_bapp' => 60000000, // 30% dari nilai kontrak
-                'jangka_waktu_pemeliharaan_bapp' => '10',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -44,8 +40,6 @@ class TagihanBAPPSeeder extends Seeder
                 'nomor_permohonan_bapp' => 'PERM/BAPP/2024/003',
                 'tanggal_permohonan_bapp' => '2024-01-17',
                 'tanggal_bapp' => '2024-01-22',
-                'jumlah_bayar_termin_1_bapp' => 50000000, // 30% dari nilai kontrak
-                'jangka_waktu_pemeliharaan_bapp' => '20',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

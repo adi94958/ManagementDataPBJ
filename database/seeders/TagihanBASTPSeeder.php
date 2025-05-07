@@ -23,7 +23,6 @@ class TagihanBASTPSeeder extends Seeder
                 'tanggal_permohonan_bastp' => '2023-02-15',
                 'tanggal_bastp' => '2023-02-20',
                 'jumlah_bayar_termin_1_bastp' => 45000000, // 30% dari nilai kontrak
-                'jangka_waktu_pemeliharaan_bastp' => '30',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -34,7 +33,6 @@ class TagihanBASTPSeeder extends Seeder
                 'tanggal_permohonan_bastp' => '2024-02-16',
                 'tanggal_bastp' => '2024-02-21',
                 'jumlah_bayar_termin_1_bastp' => 60000000, // 30% dari nilai kontrak
-                'jangka_waktu_pemeliharaan_bastp' => '40',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -45,7 +43,6 @@ class TagihanBASTPSeeder extends Seeder
                 'tanggal_permohonan_bastp' => '2024-02-17',
                 'tanggal_bastp' => '2024-02-22',
                 'jumlah_bayar_termin_1_bastp' => 90000000, // 30% dari nilai kontrak
-                'jangka_waktu_pemeliharaan_bastp' => '50',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

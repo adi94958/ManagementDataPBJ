@@ -12,14 +12,19 @@ class TagihanPho extends Model
     protected $table = 'tagihan_pho';
     protected $primaryKey = 'nomor_ba_pemeriksaan_pekerjaan_pho';
     public $incrementing = false;
-    protected $keyType = 'integer';
 
     protected $fillable = [
         'nomor_kontrak',
         'nomor_ba_pemeriksaan_pekerjaan_pho',
         'tanggal_ba_pemeriksaan_pekerjaan_pho',
         'nomor_ba_serah_terima_pho',
-        'tanggal_ba_serah_terima_pho'
+        'tanggal_ba_serah_terima_pho',
+        'nomor_bapp_pada_pho',
+        'tanggal_bapp_pada_pho',
+        'nomor_bastp_pada_pho',
+        'tanggal_bastp_pada_pho',
+        'nomor_permohonan_pho_vendor',
+        'tanggal_permohonan_pho_vendor',
     ];
 
     public function berkasPbj()

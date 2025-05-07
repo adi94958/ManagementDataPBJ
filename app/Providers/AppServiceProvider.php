@@ -31,8 +31,6 @@ class AppServiceProvider extends ServiceProvider
                 // Jika sudah login, ambil role
                 $role = Auth::user()->role;
 
-                dd($role);
-
                 // Pilih sidebar yang sesuai berdasarkan peran
                 $sidebar = "sidebar-{$role}";
 

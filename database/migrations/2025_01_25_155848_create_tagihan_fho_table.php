@@ -19,6 +19,10 @@ return new class extends Migration
             $table->date('tanggal_surat_permohonan_fho_vendor');
             $table->string('nomor_surat_laporan_tindak_lanjut_fho');
             $table->date('tanggal_surat_laporan_tindak_lanjut_fho');
+            $table->string('nomor_bapp_pada_fho');
+            $table->date('tanggal_bapp_pada_fho');
+            $table->string('nomor_bastp_pada_fho');
+            $table->date('tanggal_bastp_pada_fho');
             $table->timestamps();
         });
     }
