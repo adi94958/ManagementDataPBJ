@@ -13,11 +13,9 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    // protected $commands = [
-    //     \App\Console\Commands\CheckExpiredContracts::class,
-    // ];
+
     protected $commands = [
-        \App\Console\Commands\CekTanggalKontrak::class,
+        \App\Console\Commands\CheckExpiredContracts::class,
     ];
 
     protected function schedule(Schedule $schedule)

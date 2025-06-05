@@ -9,7 +9,7 @@ use App\Notifications\WaktuKontrakNotifikasi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class CekTanggalKontrak extends Command
+class CheckExpiredContracts extends Command
 {
     protected $signature = 'cek:tanggal-kontrak';
     protected $description = 'Cek tanggal kontrak dan pemeliharaan lalu kirim notifikasi ke user';
