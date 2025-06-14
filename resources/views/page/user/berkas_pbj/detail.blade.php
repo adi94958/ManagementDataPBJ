@@ -84,7 +84,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nilai Kontrak</label>
-                                <p class="form-control-static">Rp {{ number_format($berkasPBJ->nilai_kontrak_pbj, 0, ',', '.') }}</p>
+                                <p class="form-control-static">
+                                @if(empty($berkasPBJ->nilai_kontrak_pbj))
+                                    -
+                                @else
+                                    Rp {{ number_format($berkasPBJ->nilai_kontrak_pbj, 0, ',', '.') }}
+                                @endif
+                                </p>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -126,14 +132,14 @@
                             <div class="form-group">
                                 
                                 @if($berkasPBJ->file_path)
-                                {{-- Tombol Lihat Dokumen --}}
+                                {{-- Tombol Lihat Berkas --}}
                                 <a href="{{ asset('storage/' . $berkasPBJ->file_path) }}" 
                                     target="_blank" 
                                     class="btn btn-success btn-sm mr-1">
                                     <i class="fas fa-eye"></i> Lihat
                                 </a>
                 
-                                {{-- Tombol Download Dokumen --}}
+                                {{-- Tombol Download Berkas --}}
                                 <a href="{{ asset('storage/' . $berkasPBJ->file_path) }}" 
                                     download 
                                     class="btn btn-primary btn-sm">

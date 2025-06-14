@@ -11,9 +11,6 @@
                 <div class="col-sm-6">
                     <h1>Data Akun</h1>
                 </div>
-                <div class="col-sm-6">
-
-                </div>
             </div>
         </div>
     </section>
@@ -35,17 +32,19 @@
                 </div>
             </div>
             <div class="card-body p-0" style="margin: 20px">
-                <table id="previewAkun" class="table table-striped table-bordered display" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Foto</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="table-responsive">
+                    <table id="previewAkun" class="table table-striped table-bordered display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Foto</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
             <!-- /.card-body -->
         </div>

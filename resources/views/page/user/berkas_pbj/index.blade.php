@@ -134,6 +134,10 @@
                         "data": "nilai_kontrak_pbj",
                         "render": function(data, type, row) {
                             let rupiah = row.nilai_kontrak_pbj;
+                            if (rupiah === null || rupiah === undefined) {
+                                return "-";
+                            }
+                    
                             return new Intl.NumberFormat('id-ID', {
                                 style: 'currency',
                                 currency: 'IDR',

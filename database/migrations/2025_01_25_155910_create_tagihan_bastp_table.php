@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('tagihan_bastp', function (Blueprint $table) {
             $table->string('nomor_kontrak');
-            $table->string('nomor_permohonan_bastp');
-            $table->date('tanggal_permohonan_bastp');
+            $table->string('nomor_permohonan_bastp')->nullable();
+            $table->date('tanggal_permohonan_bastp')->nullable();
             $table->string('nomor_bastp')->primary();
-            $table->date('tanggal_bastp');
-            $table->string('jumlah_bayar_termin_1_bastp');
+            $table->date('tanggal_bastp')->nullable();
+            $table->string('jumlah_bayar_termin_1_bastp')->nullable();
             $table->timestamps();
         });
     }

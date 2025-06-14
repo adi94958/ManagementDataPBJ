@@ -111,12 +111,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="nilai_kontrak_pbj">Nilai Kontrak <span class="text-danger">*</span></label>
+                                    <label for="nilai_kontrak_pbj">Nilai Kontrak</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Rp</span>
                                         </div>
-                                        <input type="text" id="nilai_kontrak_pbj" name="nilai_kontrak_pbj" class="form-control @error('nilai_kontrak_pbj') is-invalid @enderror" placeholder="Masukan Nilai Kontrak" value="{{ old('nilai_kontrak_pbj') }}" required>
+                                        <input type="text" id="nilai_kontrak_pbj" name="nilai_kontrak_pbj" class="form-control @error('nilai_kontrak_pbj') is-invalid @enderror" placeholder="Masukan Nilai Kontrak" value="{{ old('nilai_kontrak_pbj') }}" >
                                         @error('nilai_kontrak_pbj')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -162,7 +162,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="file_path">File Dokumen PBJ <small>(PDF, maks. 16MB)</small></label>
+                                    <label for="file_path">File Berkas PBJ <small>(PDF, maks. 16MB)</small></label>
                                     <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file" name="file_path" class="custom-file-input @error('file_path') is-invalid @enderror" id="file_path" accept=".pdf">
@@ -549,163 +549,173 @@
 @endsection
 @section('script_footer')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const formSubmit = document.getElementById('form-tambah-berkas');
-        const fileInput = document.getElementById('file_path');
+document.addEventListener('DOMContentLoaded', function() {
+    const formSubmit = document.getElementById('form-tambah-berkas');
+    const fileInput = document.getElementById('file_path');
 
-        // Add event listener to show the selected file name
-        fileInput.addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'Pilih file';
-            const label = this.nextElementSibling;
-            label.textContent = fileName;
-        });
+    let isSubmitting = false;
 
-        formSubmit.addEventListener('submit', function(e) {
-            // Check BAPP tab
-            const bappTab = document.getElementById('bapp');
-            const bappFields = bappTab.querySelectorAll('input[type="text"], input[type="date"], input[type="number"]');
-            let bappFilled = false;
-            let bappComplete = true;
-
-            bappFields.forEach(function(field) {
-                if (field.value.trim() !== '') {
-                    bappFilled = true;
-                }
-            });
-
-            if (bappFilled) {
-                bappFields.forEach(function(field) {
-                    if (field.value.trim() === '') {
-                        bappComplete = false;
-                        field.classList.add('is-invalid');
-                        if (!field.nextElementSibling || !field.nextElementSibling.classList.contains('invalid-feedback')) {
-                            const errorMsg = document.createElement('span');
-                            errorMsg.classList.add('invalid-feedback');
-                            errorMsg.setAttribute('role', 'alert');
-                            errorMsg.innerHTML = '<strong>Bidang ini harus diisi jika Anda mengisi bagian BAPP.</strong>';
-                            field.parentNode.appendChild(errorMsg);
-                        }
-                    }
-                });
-            }
-
-            // Check BASTP tab
-            const bastpTab = document.getElementById('bastp');
-            const bastpFields = bastpTab.querySelectorAll('input[type="text"], input[type="date"], input[type="number"]');
-            let bastpFilled = false;
-            let bastpComplete = true;
-
-            bastpFields.forEach(function(field) {
-                if (field.value.trim() !== '') {
-                    bastpFilled = true;
-                }
-            });
-
-            if (bastpFilled) {
-                bastpFields.forEach(function(field) {
-                    if (field.value.trim() === '') {
-                        bastpComplete = false;
-                        field.classList.add('is-invalid');
-                        if (!field.nextElementSibling || !field.nextElementSibling.classList.contains('invalid-feedback')) {
-                            const errorMsg = document.createElement('span');
-                            errorMsg.classList.add('invalid-feedback');
-                            errorMsg.setAttribute('role', 'alert');
-                            errorMsg.innerHTML = '<strong>Bidang ini harus diisi jika Anda mengisi bagian BASTP.</strong>';
-                            field.parentNode.appendChild(errorMsg);
-                        }
-                    }
-                });
-            }
-
-            // Check PHO tab
-            const phoTab = document.getElementById('pho');
-            const phoFields = phoTab.querySelectorAll('input[type="text"], input[type="date"]');
-            let phoFilled = false;
-            let phoComplete = true;
-
-            phoFields.forEach(function(field) {
-                if (field.value.trim() !== '') {
-                    phoFilled = true;
-                }
-            });
-
-            if (phoFilled) {
-                phoFields.forEach(function(field) {
-                    if (field.value.trim() === '') {
-                        phoComplete = false;
-                        field.classList.add('is-invalid');
-                        if (!field.nextElementSibling || !field.nextElementSibling.classList.contains('invalid-feedback')) {
-                            const errorMsg = document.createElement('span');
-                            errorMsg.classList.add('invalid-feedback');
-                            errorMsg.setAttribute('role', 'alert');
-                            errorMsg.innerHTML = '<strong>Bidang ini harus diisi jika Anda mengisi bagian PHO.</strong>';
-                            field.parentNode.appendChild(errorMsg);
-                        }
-                    }
-                });
-            }
-
-            // If any of the tabs are filled but incomplete, prevent form submission
-            if ((bappFilled && !bappComplete) || (bastpFilled && !bastpComplete) || (phoFilled && !phoComplete)) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                // Show alert message
-                const alertDiv = document.createElement('div');
-                alertDiv.classList.add('alert', 'alert-danger', 'mt-3');
-                alertDiv.setAttribute('role', 'alert');
-                alertDiv.innerHTML = '<strong>Perhatian!</strong> Harap lengkapi semua bidang pada tab yang Anda isi sebelum mengirimkan formulir.';
-
-                // Insert alert at the top of the form
-                formSubmit.insertBefore(alertDiv, formSubmit.firstChild);
-
-                // Auto-scroll to the alert
-                alertDiv.scrollIntoView({
-                    behavior: 'smooth'
-                });
-
-                // Remove alert after 5 seconds
-                setTimeout(function() {
-                    alertDiv.remove();
-                }, 5000);
-            }
-
-            // Optional: Clear validation styles when fields are filled
-            document.querySelectorAll('.is-invalid').forEach(function(field) {
-                field.addEventListener('input', function() {
-                    if (field.value.trim() !== '') {
-                        field.classList.remove('is-invalid');
-                        const errorMsg = field.nextElementSibling;
-                        if (errorMsg && errorMsg.classList.contains('invalid-feedback')) {
-                            errorMsg.remove();
-                        }
-                    }
-                });
-            });
-
-            // If validation passes and form is about to be submitted
-            if (!((bappFilled && !bappComplete) || (bastpFilled && !bastpComplete) || (phoFilled && !phoComplete))) {
-                // Prevent the default form submission
-                e.preventDefault();
-
-                // Show "loading" SweetAlert
-                Swal.fire({
-                    title: 'Sedang Memproses',
-                    html: 'Mohon tunggu sebentar...',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-
-                // Submit the form programmatically
-                setTimeout(() => {
-                    formSubmit.submit();
-                }, 500);
-            }
-
-        });
-        
+    fileInput.addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : 'Pilih file';
+        const label = this.nextElementSibling;
+        label.textContent = fileName;
     });
+
+    formSubmit.addEventListener('submit', function(e) {
+        if (isSubmitting) return;
+
+        let formError = false;
+
+        // BAPP
+        const nomorBappInput = document.getElementById('nomor_bapp');
+        const bappOtherFields = [
+            document.getElementById('tanggal_bapp'),
+            document.getElementById('nomor_permohonan_bapp'),
+            document.getElementById('tanggal_permohonan_bapp')
+        ];
+        [nomorBappInput, ...bappOtherFields].forEach(field => {
+            if (!field) return;
+            field.classList.remove('is-invalid');
+            let nextError = field.nextElementSibling;
+            while (nextError && nextError.classList.contains('invalid-feedback')) {
+                let toRemove = nextError;
+                nextError = nextError.nextElementSibling;
+                toRemove.remove();
+            }
+        });
+        let bappOtherFilled = bappOtherFields.some(field => field && field.value.trim() !== '');
+        if (bappOtherFilled && nomorBappInput.value.trim() === '') {
+            e.preventDefault();
+            formError = true;
+            nomorBappInput.classList.add('is-invalid');
+            const errorMsg = document.createElement('span');
+            errorMsg.classList.add('invalid-feedback');
+            errorMsg.setAttribute('role', 'alert');
+            errorMsg.innerHTML = '<strong>Kolom nomor BAPP wajib diisi.</strong>';
+            nomorBappInput.parentNode.appendChild(errorMsg);
+        }
+
+        // BASTP
+        const nomorBastpInput = document.getElementById('nomor_bastp');
+        const bastpOtherFields = [
+            document.getElementById('tanggal_bastp'),
+            document.getElementById('nomor_permohonan_bastp'),
+            document.getElementById('tanggal_permohonan_bastp'),
+            document.getElementById('jumlah_bayar_termin_1_bastp')
+        ];
+        [nomorBastpInput, ...bastpOtherFields].forEach(field => {
+            if (!field) return;
+            field.classList.remove('is-invalid');
+            let nextError = field.nextElementSibling;
+            while (nextError && nextError.classList.contains('invalid-feedback')) {
+                let toRemove = nextError;
+                nextError = nextError.nextElementSibling;
+                toRemove.remove();
+            }
+        });
+        let bastpOtherFilled = bastpOtherFields.some(field => field && field.value.trim() !== '');
+        if (bastpOtherFilled && nomorBastpInput.value.trim() === '') {
+            e.preventDefault();
+            formError = true;
+            nomorBastpInput.classList.add('is-invalid');
+            const errorMsg = document.createElement('span');
+            errorMsg.classList.add('invalid-feedback');
+            errorMsg.setAttribute('role', 'alert');
+            errorMsg.innerHTML = '<strong>Kolom nomor BASTP wajib diisi.</strong>';
+            nomorBastpInput.parentNode.appendChild(errorMsg);
+        }
+
+        // PHO
+        const nomorPhoInput = document.getElementById('nomor_ba_pemeriksaan_pekerjaan_pho');
+        const phoOtherFields = [
+            document.getElementById('tanggal_ba_pemeriksaan_pekerjaan_pho'),
+            document.getElementById('nomor_ba_serah_terima_pho'),
+            document.getElementById('tanggal_ba_serah_terima_pho'),
+            document.getElementById('nomor_bapp_pada_pho'),
+            document.getElementById('tanggal_bapp_pada_pho'),
+            document.getElementById('nomor_bastp_pada_pho'),
+            document.getElementById('tanggal_bastp_pada_pho'),
+            document.getElementById('nomor_permohonan_pho_vendor'),
+            document.getElementById('tanggal_permohonan_pho_vendor')
+        ];
+        [nomorPhoInput, ...phoOtherFields].forEach(field => {
+            if (!field) return;
+            field.classList.remove('is-invalid');
+            let nextError = field.nextElementSibling;
+            while (nextError && nextError.classList.contains('invalid-feedback')) {
+                let toRemove = nextError;
+                nextError = nextError.nextElementSibling;
+                toRemove.remove();
+            }
+        });
+        let phoOtherFilled = phoOtherFields.some(field => field && field.value.trim() !== '');
+        if (phoOtherFilled && nomorPhoInput.value.trim() === '') {
+            e.preventDefault();
+            formError = true;
+            nomorPhoInput.classList.add('is-invalid');
+            const errorMsg = document.createElement('span');
+            errorMsg.classList.add('invalid-feedback');
+            errorMsg.setAttribute('role', 'alert');
+            errorMsg.innerHTML = '<strong>Kolom nomor BA Pemeriksaan Pekerjaan PHO wajib diisi.</strong>';
+            nomorPhoInput.parentNode.appendChild(errorMsg);
+        }
+
+        // FHO
+        const nomorFhoInput = document.getElementById('nomor_surat_permohonan_fho_vendor');
+        const fhoOtherFields = [
+            document.getElementById('tanggal_surat_permohonan_fho_vendor'),
+            document.getElementById('nomor_surat_laporan_tindak_lanjut_fho'),
+            document.getElementById('tanggal_surat_laporan_tindak_lanjut_fho'),
+            document.getElementById('nomor_bapp_pada_fho'),
+            document.getElementById('tanggal_bapp_pada_fho'),
+            document.getElementById('nomor_bastp_pada_fho'),
+            document.getElementById('tanggal_bastp_pada_fho')
+        ];
+        [nomorFhoInput, ...fhoOtherFields].forEach(field => {
+            if (!field) return;
+            field.classList.remove('is-invalid');
+            let nextError = field.nextElementSibling;
+            while (nextError && nextError.classList.contains('invalid-feedback')) {
+                let toRemove = nextError;
+                nextError = nextError.nextElementSibling;
+                toRemove.remove();
+            }
+        });
+        let fhoOtherFilled = fhoOtherFields.some(field => field && field.value.trim() !== '');
+        if (fhoOtherFilled && nomorFhoInput.value.trim() === '') {
+            e.preventDefault();
+            formError = true;
+            nomorFhoInput.classList.add('is-invalid');
+            const errorMsg = document.createElement('span');
+            errorMsg.classList.add('invalid-feedback');
+            errorMsg.setAttribute('role', 'alert');
+            errorMsg.innerHTML = '<strong>Kolom nomor Surat Permohonan FHO Vendor wajib diisi.</strong>';
+            nomorFhoInput.parentNode.appendChild(errorMsg);
+        }
+
+        // Remove previous loading if any
+        if (typeof Swal !== "undefined") {
+            Swal.close();
+        }
+
+        if (formError) {
+            return;
+        }
+
+        e.preventDefault();
+        Swal.fire({
+            title: 'Sedang Memproses',
+            html: 'Mohon tunggu sebentar...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        setTimeout(() => {
+            isSubmitting = true;
+            formSubmit.submit();
+        }, 500);
+    });
+});
 </script>
 @endsection

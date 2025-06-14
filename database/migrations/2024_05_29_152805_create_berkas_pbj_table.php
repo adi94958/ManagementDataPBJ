@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nomor_kontrak')->primary();
             $table->date('tanggal_kontrak_mulai');
             $table->date('tanggal_kontrak_selesai');
-            $table->integer('nilai_kontrak_pbj');
+            $table->integer('nilai_kontrak_pbj')->nullable();
             $table->string('nama_vendor');
             $table->string('file_path')->nullable();
             $table->date('tanggal_mulai_pemeliharaan');

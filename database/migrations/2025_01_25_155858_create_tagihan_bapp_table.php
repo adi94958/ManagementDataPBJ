@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('tagihan_bapp', function (Blueprint $table) {
             $table->string('nomor_kontrak');
-            $table->string('nomor_permohonan_bapp');
-            $table->date('tanggal_permohonan_bapp');
+            $table->string('nomor_permohonan_bapp')->nullable();
+            $table->date('tanggal_permohonan_bapp')->nullable();
             $table->string('nomor_bapp')->primary();
-            $table->date('tanggal_bapp');
+            $table->date('tanggal_bapp')->nullable();
             $table->timestamps();
         });
     }

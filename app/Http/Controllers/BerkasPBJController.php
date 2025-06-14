@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Response;
 
 class BerkasPBJController extends Controller
 {
@@ -24,7 +23,8 @@ class BerkasPBJController extends Controller
 
     public function dataTable(Request $request)
     {
-        $query = BerkasPBJ::query();
+        $query = BerkasPBJ::orderBy('tanggal_kontrak_mulai', 'desc');
+
 
         return DataTables::of($query)
             ->addColumn('jangka_waktu_tersisa', function ($berkas) {
@@ -97,6 +97,11 @@ class BerkasPBJController extends Controller
                 ], 404);
             }
 
+            // Hapus file di storage jika ada
+            if ($berkasPBJ->file_path && Storage::disk('public')->exists($berkasPBJ->file_path)) {
+                Storage::disk('public')->delete($berkasPBJ->file_path);
+            }
+
             // Delete related records
             TagihanBAPP::where('nomor_kontrak', $id)->delete();
             TagihanBASTP::where('nomor_kontrak', $id)->delete();
@@ -127,7 +132,7 @@ class BerkasPBJController extends Controller
                 'nama_kontrak' => 'required',
                 'tanggal_kontrak_mulai' => 'required|date',
                 'tanggal_kontrak_selesai' => 'required|date|after_or_equal:tanggal_kontrak_mulai',
-                'nilai_kontrak_pbj' => 'required|numeric|min:0',
+                'nilai_kontrak_pbj' => 'nullable|numeric|min:0',
                 'nama_vendor' => 'required',
                 'tanggal_mulai_pemeliharaan' => 'nullable|date',
                 'tanggal_selesai_pemeliharaan' => 'nullable|date|after_or_equal:tanggal_mulai_pemeliharaan',
@@ -141,9 +146,6 @@ class BerkasPBJController extends Controller
             ) {
                 $bappRules = [
                     'nomor_bapp' => 'required',
-                    'nomor_permohonan_bapp' => 'required',
-                    'tanggal_permohonan_bapp' => 'required|date',
-                    'tanggal_bapp' => 'required|date'
                 ];
 
                 $validator->addRules($bappRules);
@@ -157,10 +159,6 @@ class BerkasPBJController extends Controller
             ) {
                 $bastpRules = [
                     'nomor_bastp' => 'required',
-                    'nomor_permohonan_bastp' => 'required',
-                    'tanggal_permohonan_bastp' => 'required|date',
-                    'tanggal_bastp' => 'required|date',
-                    'jumlah_bayar_termin_1_bastp' => 'required|numeric|min:0',
                 ];
 
                 $validator->addRules($bastpRules);
@@ -175,15 +173,6 @@ class BerkasPBJController extends Controller
             ) {
                 $phoRules = [
                     'nomor_ba_pemeriksaan_pekerjaan_pho' => 'required',
-                    'tanggal_ba_pemeriksaan_pekerjaan_pho' => 'required|date',
-                    'nomor_ba_serah_terima_pho' => 'required',
-                    'tanggal_ba_serah_terima_pho' => 'required|date',
-                    'nomor_bapp_pada_pho' => 'required',
-                    'tanggal_bapp_pada_pho' => 'required|date',
-                    'nomor_bastp_pada_pho' => 'required',
-                    'tanggal_bastp_pada_pho' => 'required|date',
-                    'nomor_permohonan_pho_vendor' => 'required',
-                    'tanggal_permohonan_pho_vendor' => 'required|date',
                 ];
 
                 $validator->addRules($phoRules);
@@ -198,13 +187,6 @@ class BerkasPBJController extends Controller
             ) {
                 $fhoRules = [
                     'nomor_surat_permohonan_fho_vendor' => 'required',
-                    'tanggal_surat_permohonan_fho_vendor' => 'required|date',
-                    'nomor_surat_laporan_tindak_lanjut_fho' => 'required',
-                    'tanggal_surat_laporan_tindak_lanjut_fho' => 'required|date',
-                    'nomor_bapp_pada_fho' => 'required',
-                    'tanggal_bapp_pada_fho' => 'required|date',
-                    'nomor_bastp_pada_fho' => 'required',
-                    'tanggal_bastp_pada_fho' => 'required|date'
                 ];
 
                 $validator->addRules($fhoRules);
@@ -284,10 +266,10 @@ class BerkasPBJController extends Controller
                     // Ambil nama file asli yang di-upload user
                     $originalName = $file->getClientOriginalName();
 
-                    // Simpan dengan nama asli/sanitasi ke folder files di disk public
+                    // Simpan file baru dengan nama aslinya
                     $path = $file->storeAs('files', $originalName, 'public');
 
-                    // Assign path baru ke data yang akan di-update
+                    // Simpan file_path
                     $berkasPBJData['file_path'] = $path;
                 }
 
@@ -390,7 +372,7 @@ class BerkasPBJController extends Controller
                 'nama_kontrak' => 'required',
                 'tanggal_kontrak_mulai' => 'required|date',
                 'tanggal_kontrak_selesai' => 'required|date|after_or_equal:tanggal_kontrak_mulai',
-                'nilai_kontrak_pbj' => 'required|numeric|min:0',
+                'nilai_kontrak_pbj' => 'nullable|numeric|min:0',
                 'nama_vendor' => 'required',
                 'tanggal_mulai_pemeliharaan' => 'nullable|date',
                 'tanggal_selesai_pemeliharaan' => 'nullable|date|after_or_equal:tanggal_mulai_pemeliharaan',
@@ -402,14 +384,7 @@ class BerkasPBJController extends Controller
                 $request->filled('nomor_bapp') || $request->filled('nomor_permohonan_bapp') ||
                 $request->filled('tanggal_permohonan_bapp') || $request->filled('tanggal_bapp')
             ) {
-                $bappRules = [
-                    'nomor_bapp' => 'required',
-                    'nomor_permohonan_bapp' => 'required',
-                    'tanggal_permohonan_bapp' => 'required|date',
-                    'tanggal_bapp' => 'required|date',
-                ];
-
-                $validator->addRules($bappRules);
+                $validator->addRules(['nomor_bapp' => 'required']);
             }
 
             // Check if BASTP section has any filled field, if yes then all fields are required
@@ -418,15 +393,7 @@ class BerkasPBJController extends Controller
                 $request->filled('tanggal_permohonan_bastp') || $request->filled('tanggal_bastp') ||
                 $request->filled('jumlah_bayar_termin_1_bastp')
             ) {
-                $bastpRules = [
-                    'nomor_bastp' => 'required',
-                    'nomor_permohonan_bastp' => 'required',
-                    'tanggal_permohonan_bastp' => 'required|date',
-                    'tanggal_bastp' => 'required|date',
-                    'jumlah_bayar_termin_1_bastp' => 'required|numeric|min:0',
-                ];
-
-                $validator->addRules($bastpRules);
+                $validator->addRules(['nomor_bastp' => 'required']);
             }
 
             // Check if PHO section has any filled field, if yes then all fields are required
@@ -436,20 +403,7 @@ class BerkasPBJController extends Controller
                 $request->filled('nomor_bapp_pada_pho') || $request->filled('tanggal_bapp_pada_pho') || $request->filled('nomor_bastp_pada_pho') ||
                 $request->filled('tanggal_bastp_pada_pho') || $request->filled('nomor_permohonan_pho_vendor') || $request->filled('tanggal_permohonan_pho_vendor')
             ) {
-                $phoRules = [
-                    'nomor_ba_pemeriksaan_pekerjaan_pho' => 'required',
-                    'tanggal_ba_pemeriksaan_pekerjaan_pho' => 'required|date',
-                    'nomor_ba_serah_terima_pho' => 'required',
-                    'tanggal_ba_serah_terima_pho' => 'required|date',
-                    'nomor_bapp_pada_pho' => 'required',
-                    'tanggal_bapp_pada_pho' => 'required|date',
-                    'nomor_bastp_pada_pho' => 'required',
-                    'tanggal_bastp_pada_pho' => 'required|date',
-                    'nomor_permohonan_pho_vendor' => 'required',
-                    'tanggal_permohonan_pho_vendor' => 'required|date',
-                ];
-
-                $validator->addRules($phoRules);
+                $validator->addRules(['nomor_ba_pemeriksaan_pekerjaan_pho' => 'required']);
             }
 
             // Check if FHO section has any filled field, if yes then all fields are required
@@ -459,18 +413,7 @@ class BerkasPBJController extends Controller
                 $request->filled('nomor_bapp_pada_fho') || $request->filled('tanggal_bapp_pada_fho') || $request->filled('nomor_bastp_pada_fho') ||
                 $request->filled('tanggal_bastp_pada_fho')
             ) {
-                $fhoRules = [
-                    'nomor_surat_permohonan_fho_vendor' => 'required',
-                    'tanggal_surat_permohonan_fho_vendor' => 'required|date',
-                    'nomor_surat_laporan_tindak_lanjut_fho' => 'required',
-                    'tanggal_surat_laporan_tindak_lanjut_fho' => 'required|date',
-                    'nomor_bapp_pada_fho' => 'required',
-                    'tanggal_bapp_pada_fho' => 'required|date',
-                    'nomor_bastp_pada_fho' => 'required',
-                    'tanggal_bastp_pada_fho' => 'required|date',
-                ];
-
-                $validator->addRules($fhoRules);
+                $validator->addRules(['nomor_surat_permohonan_fho_vendor' => 'required']);
             }
 
             if ($validator->fails()) {

@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('tagihan_fho', function (Blueprint $table) {
             $table->string('nomor_kontrak');
             $table->string('nomor_surat_permohonan_fho_vendor')->primary();
-            $table->date('tanggal_surat_permohonan_fho_vendor');
-            $table->string('nomor_surat_laporan_tindak_lanjut_fho');
-            $table->date('tanggal_surat_laporan_tindak_lanjut_fho');
-            $table->string('nomor_bapp_pada_fho');
-            $table->date('tanggal_bapp_pada_fho');
-            $table->string('nomor_bastp_pada_fho');
-            $table->date('tanggal_bastp_pada_fho');
+            $table->date('tanggal_surat_permohonan_fho_vendor')->nullable();
+            $table->string('nomor_surat_laporan_tindak_lanjut_fho')->nullable();
+            $table->date('tanggal_surat_laporan_tindak_lanjut_fho')->nullable();
+            $table->string('nomor_bapp_pada_fho')->nullable();
+            $table->date('tanggal_bapp_pada_fho')->nullable();
+            $table->string('nomor_bastp_pada_fho')->nullable();
+            $table->date('tanggal_bastp_pada_fho')->nullable();
             $table->timestamps();
         });
     }
