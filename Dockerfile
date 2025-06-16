@@ -22,6 +22,9 @@ WORKDIR /app
 COPY . .
 
 # Composer install
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+
+# Install dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 # Laravel setup
