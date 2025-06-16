@@ -1,0 +1,8 @@
+# File: nixpacks.toml
+
+# Bagian ini memberitahu Nixpacks untuk menggunakan
+# environment variable berikut selama proses build.
+# Ini adalah cara untuk "menghubungkan" file .ini dan .conf Anda.
+[nixpacks.environment]
+NIXPACKS_PHP_INI_PATH = "php.ini"
+NIXPACKS_PHP_NGINX_CUSTOM_CONF_PATH = "nginx.conf"
