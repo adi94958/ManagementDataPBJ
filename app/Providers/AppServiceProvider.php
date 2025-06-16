@@ -49,3 +49,5 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 }
+
+// End of file: app/Providers/AppServiceProvider.php
