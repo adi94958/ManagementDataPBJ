@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
     {
         // Run daily at 7:00 AM
         // $schedule->command('contracts:check-expired')->dailyAt('00:00');
-        $schedule->command('cek:tanggal-kontrak')->daily();
+        $schedule->command('cek:tanggal-kontrak')->everyMinute();
     }
 
     /**
