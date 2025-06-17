@@ -28,6 +28,7 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progre
 
 # Laravel setup
 RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
+RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
 RUN php artisan storage:link
 
 # Set permission (opsional tergantung kebutuhan)
