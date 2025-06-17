@@ -1,43 +1,23 @@
-FROM dunglas/frankenphp:php8.2.28
+FROM php:8.2-cli
 
-ENV TZ="Asia/Jakarta"
-ENV COMPOSER_ALLOW_SUPERUSER=1
-ENV PHP_INI_SCAN_DIR=":$PHP_INI_DIR/app.conf.d"
+# Install dependencies
+RUN apt-get update && apt-get install -y unzip libzip-dev zip git curl libonig-dev libpng-dev libxml2-dev cron \
+    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath
 
-# Konfigurasi php.ini
-COPY .docker/10-custom.ini $PHP_INI_DIR/app.conf.d/
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Konfigurasi Caddy/FrankenPHP
-COPY .docker/Caddyfile /etc/frankenphp/Caddyfile
-
-# Instal ekstensi PHP
-RUN apt update && apt install -y --no-install-recommends \
-    libpng-dev libjpeg-dev libwebp-dev libfreetype6-dev zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/*
-RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp
-RUN install-php-extensions intl mbstring exif pcntl bcmath gd zip opcache redis pdo pdo_mysql mysqli
-
-# Copy aplikasi Laravel
+# Set working directory
 WORKDIR /app
+
+# Copy project files
 COPY . .
 
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+# Install Laravel dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-# Composer install
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+# Laravel permissions & caches
+RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
 
-# Laravel setup (tanpa migrate)
-RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
-RUN php artisan storage:link
-
-# Set permission
-RUN chown -R www-data:www-data /app
-RUN chmod -R 775 /app/storage /app/bootstrap/cache
-
-# Create startup script
-COPY start.sh /usr/local/bin/start.sh
-RUN chmod +x /usr/local/bin/start.sh
-
-EXPOSE 8080
-
-CMD ["/usr/local/bin/start.sh"]
+# Run scheduled tasks
+CMD ["php", "artisan", "schedule:run"]
