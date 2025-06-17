@@ -32,6 +32,7 @@ RUN php artisan storage:link
 
 # Set permission (opsional tergantung kebutuhan)
 RUN chown -R www-data:www-data /app
+RUN chmod -R 775 /app/storage /app/bootstrap/cache
 
 # Expose port 8080 (untuk Railway)
 EXPOSE 8080
