@@ -26,12 +26,18 @@ RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/lo
 # Composer install
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
-# Laravel setup
+# Laravel setup (tanpa migrate)
 RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
-RUN php artisan storage:link && php artisan migrate --force
+RUN php artisan storage:link
 
 # Set permission
 RUN chown -R www-data:www-data /app
 RUN chmod -R 775 /app/storage /app/bootstrap/cache
 
+# Create startup script
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
 EXPOSE 8080
+
+CMD ["/usr/local/bin/start.sh"]
