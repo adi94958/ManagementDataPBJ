@@ -20,9 +20,9 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
-        // Run daily at 7:00 AM
-        // $schedule->command('contracts:check-expired')->dailyAt('00:00');
-        $schedule->command('cek:tanggal-kontrak')->everyMinute();
+        $schedule->command('cek:tanggal-kontrak')
+            ->dailyAt('01:00')  // 01:00 = jam 1 malam
+            ->timezone('Asia/Jakarta');
     }
 
     /**
