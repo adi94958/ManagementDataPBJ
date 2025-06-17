@@ -22,14 +22,11 @@ WORKDIR /app
 COPY . .
 
 # Composer install
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
-
-# Install dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 # Laravel setup
 RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
-RUN php artisan storage:link && php artisan key:generate
+RUN php artisan storage:link
 
 # Set permission (opsional tergantung kebutuhan)
 RUN chown -R www-data:www-data /app
