@@ -30,9 +30,8 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progre
 RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
 RUN php artisan storage:link
 
-# Set permission (opsional tergantung kebutuhan)
+# Set permission
 RUN chown -R www-data:www-data /app
 RUN chmod -R 775 /app/storage /app/bootstrap/cache
 
-# Expose port 8080 (untuk Railway)
 EXPOSE 8080

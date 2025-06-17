@@ -18,6 +18,16 @@
     |
     */
 
+    Route::get('/debug-session', function () {
+        return [
+            'session_id' => session()->getId(),
+            'session_data' => session()->all(),
+            'csrf_token' => csrf_token(),
+            'cookies' => request()->cookies->all(),
+            'headers' => request()->headers->all(),
+        ];
+    });
+
     Route::get('/login', function () {
         if (Auth::check()) {
             $user = Auth::user();
