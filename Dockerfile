@@ -22,4 +22,4 @@ RUN composer install --no-dev --optimize-autoloader
 RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
 
 # Run scheduled tasks
-CMD ["php", "artisan", "schedule:run"]
+CMD ["php", "artisan", "cek:tanggal-kontrak "]
