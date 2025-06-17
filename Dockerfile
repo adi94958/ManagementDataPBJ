@@ -28,7 +28,7 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progre
 
 # Laravel setup
 RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
-RUN php artisan storage:link
+RUN php artisan storage:link && php artisan migrate
 
 # Set permission
 RUN chown -R www-data:www-data /app
