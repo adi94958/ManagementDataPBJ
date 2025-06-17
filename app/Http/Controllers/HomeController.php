@@ -31,7 +31,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        Artisan::call('cek:tanggal-kontrak');
+        // Artisan::call('cek:tanggal-kontrak');
         $status = $request->status ?? 'semua';
         $query = BerkasPBJ::query();
 

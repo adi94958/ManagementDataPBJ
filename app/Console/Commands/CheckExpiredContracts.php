@@ -95,7 +95,7 @@ class CheckExpiredContracts extends Command
             $notifikasiExists = DB::table('notifications')
                 ->where('notifiable_id', $user->id)
                 ->where('notifiable_type', get_class($user))
-                ->where('created_at', '>=', Carbon::today())
+                ->whereNotNull('read_at')
                 ->whereJsonContains('data->nomor_kontrak', $berkas->nomor_kontrak)
                 ->whereJsonContains('data->type', in_array($tipeNotifikasi, ['mulai_kontrak', 'selesai_kontrak']) ? 'kontrak' : 'pemeliharaan')
                 ->exists();
