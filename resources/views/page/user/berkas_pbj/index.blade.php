@@ -50,11 +50,13 @@
                                 <th>Nomor Kontrak</th>
                                 <th>Nama Kontrak</th>
                                 <th>Tanggal Kontrak</th>
+                                <th>Tanggal Selesai Kontrak</th>
                                 <th>Jangka Waktu Kontrak</th>
                                 <th>Nilai Kontrak</th>
                                 <th>Nama Vendor</th>
+                                <th>Tanggal Mulai Pemeliharaan</th>
+                                <th>Tanggal Selesai Pemeliharaan</th>
                                 <th>Jangka Waktu Pemeliharaan</th>
-                                {{-- <th>File Kontrak</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -90,6 +92,19 @@
                     },
                     {
                         "data": "tanggal_kontrak_mulai",
+                        "render": function(data, type, row) {
+                            // Format tanggal dari ISO format ke format Indonesia (dd-mm-yyyy)
+                            if (!data) return '-';
+                            // Mengambil hanya bagian tanggal (yyyy-mm-dd) dari ISO string
+                            const datePart = data.split('T')[0];
+                            // Memisahkan komponen tanggal
+                            const [year, month, day] = datePart.split('-');
+                            // Mengembalikan dalam format dd-mm-yyyy
+                            return `${day}-${month}-${year}`;
+                        }
+                    },
+                    {
+                        "data": "tanggal_kontrak_selesai",
                         "render": function(data, type, row) {
                             // Format tanggal dari ISO format ke format Indonesia (dd-mm-yyyy)
                             if (!data) return '-';
@@ -148,6 +163,32 @@
                     },
                     {
                         "data": "nama_vendor",
+                    },
+                    {
+                        "data": "tanggal_mulai_pemeliharaan",
+                        "render": function(data, type, row) {
+                            // Format tanggal dari ISO format ke format Indonesia (dd-mm-yyyy)
+                            if (!data) return '-';
+                            // Mengambil hanya bagian tanggal (yyyy-mm-dd) dari ISO string
+                            const datePart = data.split('T')[0];
+                            // Memisahkan komponen tanggal
+                            const [year, month, day] = datePart.split('-');
+                            // Mengembalikan dalam format dd-mm-yyyy
+                            return `${day}-${month}-${year}`;
+                        }
+                    },
+                    {
+                        "data": "tanggal_selesai_pemeliharaan",
+                        "render": function(data, type, row) {
+                            // Format tanggal dari ISO format ke format Indonesia (dd-mm-yyyy)
+                            if (!data) return '-';
+                            // Mengambil hanya bagian tanggal (yyyy-mm-dd) dari ISO string
+                            const datePart = data.split('T')[0];
+                            // Memisahkan komponen tanggal
+                            const [year, month, day] = datePart.split('-');
+                            // Mengembalikan dalam format dd-mm-yyyy
+                            return `${day}-${month}-${year}`;
+                        }
                     },
                     {
                         "data": "tanggal_selesai_pemeliharaan",

@@ -2,7 +2,7 @@
 <div class="login-box">
     <div class="login-logo">
         <a href="#">
-            <b>PT JMRB RO 2</b>
+            <b>PT Jasamarga Related Business</b>
         </a>
     </div>
     <!-- /.login-logo -->
