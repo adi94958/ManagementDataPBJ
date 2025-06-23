@@ -49,7 +49,7 @@
                             <tr>
                                 <th>Nomor Kontrak</th>
                                 <th>Nama Kontrak</th>
-                                <th>Tanggal Kontrak</th>
+                                <th>Tanggal Mulai Kontrak</th>
                                 <th>Tanggal Selesai Kontrak</th>
                                 <th>Jangka Waktu Kontrak</th>
                                 <th>Nilai Kontrak</th>
@@ -92,6 +92,7 @@
                     },
                     {
                         "data": "tanggal_kontrak_mulai",
+                        "defaultContent": "-",
                         "render": function(data, type, row) {
                             // Format tanggal dari ISO format ke format Indonesia (dd-mm-yyyy)
                             if (!data) return '-';
@@ -105,6 +106,7 @@
                     },
                     {
                         "data": "tanggal_kontrak_selesai",
+                        "defaultContent": "-",
                         "render": function(data, type, row) {
                             // Format tanggal dari ISO format ke format Indonesia (dd-mm-yyyy)
                             if (!data) return '-';
@@ -118,6 +120,7 @@
                     },
                     {
                         "data": "tanggal_kontrak_selesai",
+                        "defaultContent": "-",
                         "render": function(data, type, row) {
                             // Mendapatkan tanggal selesai kontrak dari data
                             let tanggalSelesai = row.tanggal_kontrak_selesai;
@@ -147,6 +150,7 @@
                     },
                     {
                         "data": "nilai_kontrak_pbj",
+                        "defaultContent": "-",
                         "render": function(data, type, row) {
                             let rupiah = row.nilai_kontrak_pbj;
                             if (rupiah === null || rupiah === undefined) {
@@ -166,6 +170,7 @@
                     },
                     {
                         "data": "tanggal_mulai_pemeliharaan",
+                        "defaultContent": "-",
                         "render": function(data, type, row) {
                             // Format tanggal dari ISO format ke format Indonesia (dd-mm-yyyy)
                             if (!data) return '-';
@@ -179,6 +184,7 @@
                     },
                     {
                         "data": "tanggal_selesai_pemeliharaan",
+                        "defaultContent": "-",
                         "render": function(data, type, row) {
                             // Format tanggal dari ISO format ke format Indonesia (dd-mm-yyyy)
                             if (!data) return '-';
@@ -192,6 +198,7 @@
                     },
                     {
                         "data": "tanggal_selesai_pemeliharaan",
+                        "defaultContent": "-",
                         "render": function(data, type, row) {
                             // Mendapatkan tanggal selesai kontrak dari data
                             let tanggalSelesai = row.tanggal_selesai_pemeliharaan;
